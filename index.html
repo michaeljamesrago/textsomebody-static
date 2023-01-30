@@ -88,11 +88,7 @@
         that message belongs to.
       </p>
       <div class="ms-5">
-      
-      <pre># In app/models/message.rb
-      
-      after_create_commit { broadcast_append_to self.conversation }</pre>
-      
+        <script src="https://gist.github.com/michaeljamesrago/9eaab6d278f7e5018b50d769932ae02b.js?file=textsomebody_code_snippet1.rb"></script>      
       </div>
       <p>
         Next, we need to make sure that any client viewing a conversation is subscribed 
@@ -100,11 +96,7 @@
         the turbo_stream_from tag to the view template.
       </p>
       <div class="ms-5">
-      
-      <pre># In app/views/conversations/show.html.rb
-      
-      <%= turbo_stream_from @conversation %></pre>
-      
+        <script src="https://gist.github.com/michaeljamesrago/9eaab6d278f7e5018b50d769932ae02b.js?file=textsomebody_code_snippet2.rb"></script>
       </div>
       <p>
         By default, when the client receives the broadcast, it will look to append the new 
@@ -113,13 +105,7 @@
         messages is appropriately named.
       </p>
       <div class="ms-5">
-      
-        <pre># In app/views/conversations/show.html.rb
-        
-      &lt;div id="messages"&gt;
-        <%= render @conversation.messages %>
-      &lt;/div&gt;</pre>
-      
+        <script src="https://gist.github.com/michaeljamesrago/9eaab6d278f7e5018b50d769932ae02b.js?file=textsomebody_code_snippet3.rb"></script>
       </div>
       <p>
         Now the message has been created, joined to its parent conversation, and displayed 
@@ -140,14 +126,7 @@
         "TWILIO_AUTH_TOKEN." We've set "TWILIO_FROM_NUMBER" as an environment variable as well. 
       </p>
       <div class="ms-5">
-      
-      <pre>client = Twilio::REST::Client.new
-      client.messages.create(
-        from: ENV['TWILIO_FROM_NUMBER'],
-        body: "This SMS message was sent through Twilio by TextSomebody!",
-        to: "+15555555555" # The recipient's phone number goes here.
-      )</pre>
-      
+        <script src="https://gist.github.com/michaeljamesrago/9eaab6d278f7e5018b50d769932ae02b.js?file=textsomebody_code_snippet4.rb"></script>
       </div>
       <p>
         We want to invoke this code every time a new message is added to the database. Therefore, 
@@ -160,28 +139,7 @@
         Conversation model, which is invoked in the Message#create method.
       </p>
       <div class="ms-5">
-      
-      <pre># In app/controllers/messages_controller.rb
-      
-      def create
-        @conversation = Conversation.find(params[:conversation_id])
-        @message = @conversation.messages.build(msg_params)
-        if @message.save
-          @conversation.send_sms(params[:message][:body])
-        end
-      end
-      
-      # In app/models/conversation.rb
-      
-      def send_sms(body)
-        client = Twilio::REST::Client.new
-        client.messages.create(
-          from: ENV['TWILIO_FROM_NUMBER'],
-          body: body,
-          to: number
-        )
-      end</pre>
-      
+        <script src="https://gist.github.com/michaeljamesrago/9eaab6d278f7e5018b50d769932ae02b.js?file=textsomebody_code_snippet5.rb"></script>
       </div>
       <h5>Receiving Messages</h5>
       <p>
@@ -197,25 +155,7 @@
         incoming messages, and a controller to handle requests for that path.
       </p>
       <div class="ms-5">
-      <pre># Add to config/routes.rb
-      
-        post '/incoming_messages', to: "incoming_messages#create"
-      
-      
-      # app/controllers/incoming_messages_controller.rb
-      
-        class IncomingMessagesController < ApplicationController
-          skip_before_action :verify_authenticity_token
-        
-          def create
-            num = params[:From].slice(2, 11) # Remove "+1" at beginning of string 
-            @conversation = Conversation.find_by(number: num)
-            @message = @conversation.messages.build(body: params[:Body])
-            @message.incoming = true
-            @message.save
-            response.status = 204
-          end
-        end</pre>
+        <script src="https://gist.github.com/michaeljamesrago/9eaab6d278f7e5018b50d769932ae02b.js?file=textsomebody_code_snippet6.rb"></script>
       </div>
       <p>
         We are interested in two properties of the webhook's payload: "From" and "Body". The 
@@ -243,11 +183,7 @@
         render the form that submits new messages.
       </p>
       <div class="ms-5">
-      <pre># # In app/views/conversations/show.html.rb
-        &lt;div&gt;
-          <%%= render "layouts/new_message_form" if !!session[:conversation_id] && 
-                                                   (session[:conversation_id] == @conversation.id) %>
-        &lt;/div&gt;</pre>
+        <script src="https://gist.github.com/michaeljamesrago/9eaab6d278f7e5018b50d769932ae02b.js?file=textsomebody_code_snippet7.rb"></script>
       </div>
       <p>
         If the cookie is not present, or if the encrypted id in the cookie does not match the 
