@@ -19,10 +19,10 @@
                 <a class="nav-link" href="https://pacific-sands-54878.herokuapp.com/">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="./index.html">About</a>
+                <a class="nav-link active" href="./index.html">About</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="https://pacific-sands-54878.herokuapp.com/static_pages/contact">Contact</a>
+                <a class="nav-link" href="./contact.html">Contact</a>
               </li>
             </ul>
           </div>
@@ -38,7 +38,7 @@
       </p>
       <h4>How does it work?</h4>
       <p>
-        TextSomebody is built with Ruby On Rails, and makes use of ActionCable, Rails' 
+        TextSomebody is built with Rails 7, and makes use of ActionCable, Rails' 
         websocket API, to simulate the real-time feel of a text-message conversation. 
         It depends on Twilio's API for sending and receiving messages.
       </p>
@@ -93,7 +93,7 @@
       <p>
         Next, we need to make sure that any client viewing a conversation is subscribed 
         to the channel that carries that conversation's new messages. We do this by adding 
-        the turbo_stream_from tag to the view template.
+        the <code>turbo_stream_from</code> tag to the view template.
       </p>
       <div class="ms-5">
         <script src="https://gist.github.com/michaeljamesrago/9eaab6d278f7e5018b50d769932ae02b.js?file=textsomebody_code_snippet2.rb"></script>
@@ -120,10 +120,11 @@
       </p>
       <p>
         With the account credentials and phone number in hand, the most convenient way to 
-        use the Twilio API in a Ruby application is to install the twilio-ruby gem and use the 
-        Client wrapper class. For this to work, you must make the account credentials 
-        accessible through environment variables, specifically "TWILIO_ACCOUNT_SID" and 
-        "TWILIO_AUTH_TOKEN." We've set "TWILIO_FROM_NUMBER" as an environment variable as well. 
+        use the Twilio API in a Ruby application is to install the <code>twilio-ruby</code> 
+        gem and use the Client wrapper class. For this to work, you mu<a class="nav-link active" href="./contact.html">Contact</a>st make the account 
+        credentials accessible through environment variables, specifically 
+        <code>TWILIO_ACCOUNT_SID</code> and <code>TWILIO_AUTH_TOKEN</code>. We've set 
+        <code>TWILIO_FROM_NUMBER</code> as an environment variable as well. 
       </p>
       <div class="ms-5">
         <script src="https://gist.github.com/michaeljamesrago/9eaab6d278f7e5018b50d769932ae02b.js?file=textsomebody_code_snippet4.rb"></script>
@@ -145,8 +146,8 @@
       <p>
         When we send a message with TextSomebody, it will appear on the recipient's device as 
         having come from the number designated in our environment variables as 
-        "TWILIO_FROM_NUMBER". Naturally, when they reply, this is also the number their reply 
-        will be sent to. What happens when they reply to that number?
+        <code>TWILIO_FROM_NUMBER</code>. Naturally, when they reply, this is also the number 
+        their reply will be sent to. What happens when they reply to that number?
       </p>
       <p>
         One of the features of Twilio's Programmable SMS API is that it can send a webhook to 
@@ -158,15 +159,16 @@
         <script src="https://gist.github.com/michaeljamesrago/9eaab6d278f7e5018b50d769932ae02b.js?file=textsomebody_code_snippet6.rb"></script>
       </div>
       <p>
-        We are interested in two properties of the webhook's payload: "From" and "Body". The 
-        "From" property is the phone number the incoming message was sent from. This is what 
-        we use to find the conversation this message should be associated with.
+        We are interested in two properties of the webhook's payload: <code>From</code> and 
+        <code>Body</code>. The <code>From</code> property is the phone number the incoming 
+        message was sent from. This is what we use to find the conversation this message should 
+        be associated with.
       </p>
       <p>
-        The "Body" property is the text of the message itself, which is added to the database 
-        in the same way that outgoing messages are. As soon as the transaction is committed, 
-        the new message is broadcast over the conversation's channel, so that anyone viewing 
-        the conversation will see it updated with the new message in real time.
+        The <code>Body</code>property is the text of the message itself, which is added to the 
+        database in the same way that outgoing messages are. As soon as the transaction is 
+        committed, the new message is broadcast over the conversation's channel, so that anyone 
+        viewing the conversation will see it updated with the new message in real time.
       </p>
       <div>
         <img src="./images/textsomebodydemo4.gif">
